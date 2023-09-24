@@ -3,8 +3,8 @@ package com.donesk.moneytracker.service;
 import com.donesk.moneytracker.entity.Category;
 import com.donesk.moneytracker.entity.Transaction;
 import com.donesk.moneytracker.exception.TransactionNotFoundException;
-import com.donesk.moneytracker.repos.CategoryRepo;
-import com.donesk.moneytracker.repos.TransactionRepo;
+import com.donesk.moneytracker.repository.CategoryRepo;
+import com.donesk.moneytracker.repository.TransactionRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,7 @@ public class TransactionService {
     }
 
     public Transaction getTransaction(Long id){
-        return transactionRepo.findById(id).orElseThrow( () -> new TransactionNotFoundException("Transaction with id "+ id + " doesn't exist"));
+        return transactionRepo.findById(id).orElseThrow( () -> new TransactionNotFoundException("Transaction with id "+ id + " wasn't found"));
     }
 
     @Transactional

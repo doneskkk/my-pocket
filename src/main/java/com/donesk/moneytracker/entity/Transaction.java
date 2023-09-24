@@ -1,10 +1,16 @@
 package com.donesk.moneytracker.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import lombok.*;
 
 import java.time.LocalDate;
 
+
+@RequiredArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "transaction")
 public class Transaction{
@@ -14,80 +20,28 @@ public class Transaction{
     @Column(name = "id")
     private Long id;
 
+    @NonNull
+    @Min(value = 1,  message = "Amount might be greater than 0")
     @Column(name = "amount", nullable = false)
     private Double amount;
 
+    @NonNull
     @Column(name = "description")
     private String description;
 
+    @NonNull
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "budget_id", referencedColumnName = "id")
     @JsonIgnore
     private Budget budget;
 
-    public Transaction() {
-    }
-
-    public Transaction(Double amount, String description, LocalDate date, Category category, Budget budget) {
-        this.amount = amount;
-        this.description = description;
-        this.date = date;
-        this.category = category;
-        this.budget = budget;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Budget getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Budget budget) {
-        this.budget = budget;
-    }
 }

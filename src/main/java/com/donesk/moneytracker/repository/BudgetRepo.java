@@ -1,4 +1,4 @@
-package com.donesk.moneytracker.repos;
+package com.donesk.moneytracker.repository;
 
 import com.donesk.moneytracker.entity.Budget;
 import org.springframework.data.jpa.repository.JpaRepository;

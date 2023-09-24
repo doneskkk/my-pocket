@@ -1,14 +1,19 @@
 package com.donesk.moneytracker.entity;
 
-import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.NonNull;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "Budgets")
 @Entity
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Budget {
 
     @Id
@@ -17,67 +22,31 @@ public class Budget {
     private Long id;
 
     @NonNull
+    @NotBlank(message = "Title cannot be blank")
     @Column(name = "title", nullable = false)
     private String title;
 
-
+    @NonNull
     @Column(name = "current_progress")
-    private Double currentProgress;
+    private Double currentProgress = 0.0;
 
     @NonNull
+    @Min(value = 0, message = "Goal might be greater than 0")
     @Column(name = "goal", nullable = false)
     private Double goal;
 
+    @NonNull
     @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
-    private List<Transaction> transactionList;
+    private List<Transaction> transactionList = new ArrayList<>();
 
-    public Budget(String title, Double currentProgress, Double goal, List<Transaction> transactionList) {
-        this.title = title;
-        this.currentProgress = currentProgress;
-        this.goal = goal;
-        this.transactionList = transactionList;
-    }
+    @NonNull
+    @Column(name = "status", nullable = false)
+    private boolean status = false;
 
-    public Budget() {
-    }
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotEmpty( message = "The user field cannot be empty")
+    private User user;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Double getCurrentProgress() {
-        return currentProgress;
-    }
-
-    public void setCurrentProgress(Double currentProgress) {
-        this.currentProgress = currentProgress;
-    }
-
-    public Double getGoal() {
-        return goal;
-    }
-
-    public void setGoal(Double goal) {
-        this.goal = goal;
-    }
-
-    public List<Transaction> getTransactionList() {
-        return transactionList;
-    }
-
-    public void setTransactionList(List<Transaction> transactionList) {
-        this.transactionList = transactionList;
-    }
 }

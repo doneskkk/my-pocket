@@ -2,7 +2,7 @@ package com.donesk.moneytracker.service;
 
 import com.donesk.moneytracker.entity.Category;
 import com.donesk.moneytracker.exception.CategoryNotFoundException;
-import com.donesk.moneytracker.repos.CategoryRepo;
+import com.donesk.moneytracker.repository.CategoryRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class CategoryService {
     }
 
     public Category getCategory(Long id){
-       return categoryRepo.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category with id "+ id + " doesn't exist"));
+       return categoryRepo.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category with id "+ id + " wasn't found"));
     }
 
     @Transactional

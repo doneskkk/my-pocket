@@ -2,11 +2,15 @@ package com.donesk.moneytracker.service;
 
 import com.donesk.moneytracker.entity.Budget;
 import com.donesk.moneytracker.entity.Transaction;
-import com.donesk.moneytracker.repos.BudgetRepo;
-import com.donesk.moneytracker.repos.TransactionRepo;
+import com.donesk.moneytracker.entity.User;
+import com.donesk.moneytracker.exception.BudgetNotFoundException;
+import com.donesk.moneytracker.repository.BudgetRepo;
+import com.donesk.moneytracker.repository.TransactionRepo;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +27,17 @@ public class BudgetService {
     }
 
     @Transactional
-    public Long create(Budget budget){
+    public Long create(Budget budget, Authentication authentication){
+
+        User authenticatedUser = (User) authentication.getPrincipal();
+
+        budget.setUser(authenticatedUser); // Associate the authenticated user with the budget
+
         return budgetRepo.save(budget).getId();
     }
 
-    public Optional<Budget> getBudget(Long id){
-        return budgetRepo.findById(id);
+    public Budget getBudget(Long id){
+        return budgetRepo.findById(id).orElseThrow( () -> new BudgetNotFoundException("Budget with id "+ id + " wasn't found"));
     }
 
     public List<Budget> getBudgets() {
@@ -36,12 +45,12 @@ public class BudgetService {
     }
 
     @Transactional
-    public Double addTransactionToBudget(Long budget_id, Long transaction_id){
-        Optional<Budget> budget =
-                budgetRepo.findById(budget_id);
+    public Double addTransactionToBudget(Long budgetId, Long transactionId) {
+        Optional<Budget> budget = budgetRepo.findById(budgetId);
 
-        Optional<Transaction> transactionToAdd =
-                transactionRepo.findById(transaction_id);
+        Optional<Transaction> transactionToAdd = transactionRepo.findById(transactionId);
+
+        Double currentProgress = 0.0;
 
         budget.get().getTransactionList().add(transactionToAdd.get());
         transactionToAdd.get().setBudget(budget.get());
@@ -50,12 +59,22 @@ public class BudgetService {
                 .stream()
                 .mapToDouble(Transaction::getAmount)
                 .sum();
-          Double currentProgress = budget.get().getCurrentProgress();
-        budget.get().setCurrentProgress(currentProgress + totalTransactionAmount);
+
+         currentProgress = budget.get().getCurrentProgress();
+         budget.get().setCurrentProgress(currentProgress + totalTransactionAmount);
+
+         if(isGoalAchieved(budgetId)){
+                budget.get().setStatus(true);
+         }
+
         budgetRepo.save(budget.get());
         transactionRepo.save(transactionToAdd.get());
 
-
         return currentProgress;
+    }
+
+    private boolean isGoalAchieved(Long budgetId){
+        Budget budgetToCheck = budgetRepo.findById(budgetId).get();
+        return budgetToCheck.getGoal() <= budgetToCheck.getCurrentProgress();
     }
 }

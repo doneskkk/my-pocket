@@ -1,6 +1,5 @@
 package com.donesk.moneytracker.repository;
 
-import com.donesk.moneytracker.dto.RegistrationUserDto;
 import com.donesk.moneytracker.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

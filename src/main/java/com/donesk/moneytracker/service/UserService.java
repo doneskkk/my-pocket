@@ -1,6 +1,6 @@
 package com.donesk.moneytracker.service;
 
-import com.donesk.moneytracker.dto.RegistrationUserDto;
+import com.donesk.moneytracker.dto.credentials.RegistrationUserDto;
 import com.donesk.moneytracker.entity.User;
 import com.donesk.moneytracker.exception.UserNotFoundException;
 import com.donesk.moneytracker.repository.UserRepo;

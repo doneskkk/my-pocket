@@ -1,4 +1,4 @@
-package com.donesk.moneytracker.dto;
+package com.donesk.moneytracker.dto.credentials;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
-
     private String email;
     private String password;
-
 }

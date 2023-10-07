@@ -18,11 +18,13 @@ public class Category{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
     @NonNull
     @NotBlank(message = "Description of category cannot be blank")
     @Column(name = "description")
+    @JsonIgnore
     private String description;
 
     @NonNull

@@ -1,4 +1,4 @@
-package com.donesk.moneytracker.dto;
+package com.donesk.moneytracker.dto.credentials;
 
 
 import lombok.AllArgsConstructor;

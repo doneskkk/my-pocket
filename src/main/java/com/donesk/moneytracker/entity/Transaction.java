@@ -25,7 +25,6 @@ public class Transaction{
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @NonNull
     @Column(name = "description")
     private String description;
 
@@ -33,7 +32,6 @@ public class Transaction{
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @NonNull
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;

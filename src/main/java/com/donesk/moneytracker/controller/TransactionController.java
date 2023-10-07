@@ -24,9 +24,9 @@ public class TransactionController {
         return new ResponseEntity<List<Transaction>>(transactionList, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Transaction> add(@RequestBody Transaction transaction){
-        transactionService.add(transaction);
+    @PostMapping("/budgets/{budgetId}")
+    public ResponseEntity<Transaction> add(@PathVariable Long budgetId, @RequestBody Transaction transaction){
+        transactionService.add(budgetId, transaction);
 
        return new ResponseEntity<Transaction>(transaction, HttpStatus.CREATED);
     }

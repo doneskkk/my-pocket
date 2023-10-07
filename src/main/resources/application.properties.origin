@@ -4,4 +4,12 @@ spring.datasource.username=
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=update
 spring.datasource.driver-class-name=
-spring.jpa.show-sql=true
+spring.jpa.show-sql=
+server.error.include-stacktrace=
+spring.security.user.password=
+spring.main.allow-circular-references=true
+server.port=
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+
+jwt.secret=
+jwt.lifetime=

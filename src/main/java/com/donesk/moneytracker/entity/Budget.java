@@ -3,7 +3,8 @@ package com.donesk.moneytracker.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 import java.util.ArrayList;
@@ -46,7 +47,10 @@ public class Budget {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotEmpty( message = "The user field cannot be empty")
+    @NotNull( message = "The user field cannot be empty")
     private User user;
 
+    public void updateCurrentProgress(double amount) {
+        this.currentProgress += amount;
+    }
 }

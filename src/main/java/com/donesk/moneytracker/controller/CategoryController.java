@@ -1,6 +1,6 @@
 package com.donesk.moneytracker.controller;
 
-import com.donesk.moneytracker.entity.Category;
+import com.donesk.moneytracker.model.Category;
 import com.donesk.moneytracker.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

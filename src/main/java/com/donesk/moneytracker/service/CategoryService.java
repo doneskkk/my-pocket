@@ -1,6 +1,6 @@
 package com.donesk.moneytracker.service;
 
-import com.donesk.moneytracker.entity.Category;
+import com.donesk.moneytracker.model.Category;
 import com.donesk.moneytracker.exception.CategoryNotFoundException;
 import com.donesk.moneytracker.repository.CategoryRepo;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 version: '0.1'
 services:
   postgres:
-    image: postgres:13.3
+    image: mysql/mysql-server
     environment:
-      - POSTGRES_USER=donesk
+      - MYSQLL=donesk
       - POSTGRES_PASSWORD=donesk
       - POSTGRES_DB=moneytracker-api
     ports:

@@ -6,6 +6,7 @@ import com.donesk.moneytracker.model.Transaction;
 import com.donesk.moneytracker.exception.TransactionNotFoundException;
 import com.donesk.moneytracker.repository.CategoryRepo;
 import com.donesk.moneytracker.repository.TransactionRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TransactionService {
 
     private final TransactionRepo transactionRepo;
@@ -35,22 +37,31 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction add(Long budgetId, Transaction transaction){
-        //Set Date
+    public Transaction add(Long budgetId, Transaction transaction) {
+        log.info("Processing transaction: {} for budgetId: {}", transaction, budgetId);
+
         transaction.setDate(LocalDate.now());
 
-        //Find category by transaction
-        Category category = categoryRepo.findById(transaction.getCategory().getId()).get();
-
-        //Set category
+        Category category = categoryRepo.findById(transaction.getCategory().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
         transaction.setCategory(category);
+
         Budget budget = budgetService.getBudget(budgetId);
-        budget.getTransactionList().add(transaction);
         transaction.setBudget(budget);
+
+        log.info("Before updating budget: {}", budget);
+        log.info("Transaction details before saving: {}", transaction);
+
         budget.updateCurrentProgress(transaction.getAmount(), transaction.getCategory());
         budgetService.updateStatus(budget);
-        return transactionRepo.save(transaction);
+
+        Transaction savedTransaction = transactionRepo.save(transaction);
+
+        log.info("Transaction saved successfully: {}", savedTransaction);
+        return savedTransaction;
     }
+
+
 
     @Transactional
     public void delete(Long id){

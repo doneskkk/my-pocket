@@ -1,6 +1,6 @@
 package com.donesk.moneytracker.repository;
 
-import com.donesk.moneytracker.entity.Transaction;
+import com.donesk.moneytracker.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

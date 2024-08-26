@@ -1,5 +1,6 @@
 package com.donesk.moneytracker.controller;
 
+import com.donesk.moneytracker.dto.response.BudgetCreateDTO;
 import com.donesk.moneytracker.dto.response.BudgetDTO;
 import com.donesk.moneytracker.model.Budget;
 import com.donesk.moneytracker.service.BudgetService;
@@ -52,10 +53,11 @@ public class BudgetController {
     @ApiResponse(responseCode = "400", description = "Invalid input data")
     @PostMapping
     public ResponseEntity<Budget> add(
-            @Valid @RequestBody BudgetDTO budgetDTO,
+            @Valid @RequestBody BudgetCreateDTO budgetCreateDTO,
             BindingResult bd,
             Authentication authentication) {
-        Budget budget = modelMapper.map(budgetDTO, Budget.class);
+        Budget budget = modelMapper.map(budgetCreateDTO, Budget.class);
+        budget.setCurrentProgress(0.0);
         budgetService.create(budget, authentication);
         return new ResponseEntity<>(budget, HttpStatus.CREATED);
     }

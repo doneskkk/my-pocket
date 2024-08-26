@@ -33,6 +33,7 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public Optional<User> findByUsername(String username){
         return userRepo.findByUsername(username);
     }

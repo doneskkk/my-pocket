@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,6 @@ public class Budget {
     private Long id;
 
     @NonNull
-    @NotBlank(message = "Title cannot be blank")
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -33,13 +34,12 @@ public class Budget {
     private Double currentProgress = 0.0;
 
     @NonNull
-    @Min(value = 0, message = "Goal might be greater than 0")
     @Column(name = "goal", nullable = false)
     private Double goal;
 
     @NonNull
-    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN) // Eager fetch
     private List<Transaction> transactionList = new ArrayList<>();
 
     @NonNull
@@ -47,7 +47,7 @@ public class Budget {
     private boolean status = false;
 
     @NonNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @NotNull( message = "The user field cannot be empty")
     @JsonIgnore

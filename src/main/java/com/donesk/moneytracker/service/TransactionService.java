@@ -70,6 +70,6 @@ public class TransactionService {
 
 
     public List<Transaction> findTransactionsByBudgetId(Long budgetId){
-        return transactionRepo.findTransactionsByBudgetId(budgetId);
+        return transactionRepo.findByBudgetId(budgetId);
     }
 }

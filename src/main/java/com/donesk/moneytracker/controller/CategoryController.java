@@ -2,10 +2,12 @@ package com.donesk.moneytracker.controller;
 
 import com.donesk.moneytracker.model.Category;
 import com.donesk.moneytracker.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Category Controller")
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {

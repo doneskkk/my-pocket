@@ -62,8 +62,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/v1/budgets/**").permitAll() // delete , just for test UI
-                                .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers(AUTH_WHITELIST).permitAll()
                                 .anyRequest().authenticated()
                 );
 
@@ -73,4 +72,12 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
+    private static final String[] AUTH_WHITELIST= {
+            "/api/auth/**",
+            "/v3/api-docs/**",
+            "v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 }

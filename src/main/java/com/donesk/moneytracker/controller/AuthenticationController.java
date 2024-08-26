@@ -10,6 +10,10 @@ import com.donesk.moneytracker.model.User;
 import com.donesk.moneytracker.repository.RoleRepo;
 import com.donesk.moneytracker.repository.UserRepo;
 import com.donesk.moneytracker.service.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,10 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+@Tag(name = " JWT Authentication")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -44,8 +47,13 @@ public class AuthenticationController {
         this.jwtUtils = jwtUtils;
     }
 
+    @Operation(summary = "Authenticate user", description = "Authenticate a user and generate a JWT token")
+    @ApiResponse(responseCode = "200", description = "Successful authentication")
+    @ApiResponse(responseCode = "401", description = "Unauthorized: Invalid username or password")
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(
+            @Parameter(description = "Login request containing username and password") @Valid @RequestBody LoginRequest loginRequest) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
@@ -65,8 +73,13 @@ public class AuthenticationController {
                 roles));
     }
 
+    @Operation(summary = "Register user", description = "Register a new user with username, email, and password")
+    @ApiResponse(responseCode = "200", description = "User registered successfully")
+    @ApiResponse(responseCode = "400", description = "Bad Request: Username or email already taken")
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(
+            @Parameter(description = "Registration request containing username, email, and password") @Valid @RequestBody RegisterRequest signUpRequest) {
+
         if (userRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -89,8 +102,6 @@ public class AuthenticationController {
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 
         roles.add(userRole);
-
-
 
         user.setRoles(roles);
         userRepo.save(user);

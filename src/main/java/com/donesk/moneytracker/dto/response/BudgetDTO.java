@@ -14,7 +14,7 @@ public class BudgetDTO {
 
     private Long id;
     private String title;
-    private Double currentProgress;
+    private Double currentProgress = 0.0;
 
     @JsonIgnore
     private List<Transaction> transactionList = new ArrayList<>();

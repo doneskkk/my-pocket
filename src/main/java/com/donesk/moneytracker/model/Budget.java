@@ -28,7 +28,7 @@ public class Budget {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NonNull
+
     @Column(name = "current_progress")
     private Double currentProgress = 0.0;
 

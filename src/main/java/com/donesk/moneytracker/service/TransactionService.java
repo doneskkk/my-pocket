@@ -1,5 +1,6 @@
 package com.donesk.moneytracker.service;
 
+import com.donesk.moneytracker.exception.CategoryNotFoundException;
 import com.donesk.moneytracker.model.Budget;
 import com.donesk.moneytracker.model.Category;
 import com.donesk.moneytracker.model.Transaction;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -27,7 +29,6 @@ public class TransactionService {
         this.budgetService = budgetService;
     }
 
-
     public List<Transaction> getTransactions(){
         return transactionRepo.findAll();
     }
@@ -42,9 +43,13 @@ public class TransactionService {
 
         transaction.setDate(LocalDate.now());
 
-        Category category = categoryRepo.findById(transaction.getCategory().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
-        transaction.setCategory(category);
+        Optional<Category> category = categoryRepo.findById(transaction.getCategory().getId());
+        if(category.isPresent()) {
+            transaction.setCategory(category.get());
+        } else {
+            throw new CategoryNotFoundException("Category not found");
+        }
+
 
         Budget budget = budgetService.getBudget(budgetId);
         transaction.setBudget(budget);
@@ -61,15 +66,16 @@ public class TransactionService {
         return savedTransaction;
     }
 
-
-
     @Transactional
     public void delete(Long id){
         transactionRepo.deleteById(id);
     }
 
-
     public List<Transaction> findTransactionsByBudgetId(Long budgetId){
         return transactionRepo.findByBudgetId(budgetId);
+    }
+
+    public List<Transaction> findByCategory(Long categoryId) {
+        return transactionRepo.findByCategoryId(categoryId);
     }
 }

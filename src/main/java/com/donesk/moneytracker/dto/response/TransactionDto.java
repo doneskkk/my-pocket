@@ -10,6 +10,6 @@ public class TransactionDto {
 
     private String description;
 
-    @Min(value = 1,  message = "Amount might be greater than 0")
+    @Min(value = 1,  message = "Amount should be greater than 0")
     private Double amount;
 }

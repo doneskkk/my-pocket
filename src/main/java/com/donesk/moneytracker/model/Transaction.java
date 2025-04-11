@@ -21,7 +21,7 @@ public class Transaction{
     private Long id;
 
     @NonNull
-    @Min(value = 1,  message = "Amount might be greater than 0")
+    @Min(value = 1,  message = "Amount should be greater than 0")
     @Column(name = "amount", nullable = false)
     private Double amount;
 

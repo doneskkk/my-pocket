@@ -3,7 +3,9 @@ package com.donesk.moneytracker.controller;
 import com.donesk.moneytracker.dto.response.BudgetCreateDTO;
 import com.donesk.moneytracker.dto.response.BudgetDTO;
 import com.donesk.moneytracker.model.Budget;
+import com.donesk.moneytracker.model.User;
 import com.donesk.moneytracker.service.BudgetService;
+import com.donesk.moneytracker.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Tag(name = "Budget Controller")
@@ -28,10 +32,12 @@ public class BudgetController {
 
     private final ModelMapper modelMapper;
     private final BudgetService budgetService;
+    private final UserService userService;
 
-    public BudgetController(ModelMapper modelMapper, BudgetService budgetService) {
+    public BudgetController(ModelMapper modelMapper, BudgetService budgetService, UserService userService) {
         this.modelMapper = modelMapper;
         this.budgetService = budgetService;
+        this.userService = userService;
     }
 
     @Operation(summary = "Get all budgets", description = "Retrieve a list of budgets created by the authenticated user")
@@ -69,9 +75,14 @@ public class BudgetController {
     public ResponseEntity<BudgetDTO> getBudget(
             @Parameter(description = "ID of the budget to retrieve") @PathVariable Long id,
             Authentication authentication) {
+        Optional<User> user = userService.findByUsername(authentication.getName());
         Budget budget = budgetService.getBudget(id);
-        BudgetDTO budgetResponse = modelMapper.map(budget, BudgetDTO.class);
-        return new ResponseEntity<>(budgetResponse, HttpStatus.OK);
+        if (Objects.equals(user.get().getId(), budget.getUser().getId())) {
+            BudgetDTO budgetResponse = modelMapper.map(budget, BudgetDTO.class);
+            return new ResponseEntity<>(budgetResponse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }

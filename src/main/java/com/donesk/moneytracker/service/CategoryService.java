@@ -20,9 +20,6 @@ public class CategoryService {
         this.categoryRepo = categoryRepo;
     }
 
-    public Set<Category> getCategories(){
-       return (Set<Category>) categoryRepo.findAll();
-    }
 
     public Category getCategory(Long id){
        return categoryRepo.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category with id "+ id + " wasn't found"));

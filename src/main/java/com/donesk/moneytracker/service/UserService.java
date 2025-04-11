@@ -59,16 +59,4 @@ public class UserService implements UserDetailsService {
         );
     }
 
-//    public User createUser(RegistrationUserDto registrationUserDto){
-//        User user = new User();
-////        if(registrationUserDto.getPassword() != registrationUserDto.getConfirmPassword()) {
-////            throw new R
-////        }
-//        user.setUsername(registrationUserDto.getUsername());
-//        user.setEmail(registrationUserDto.getEmail());
-//        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-//        user.setRoles(List.of(roleService.getUserRole()));
-//        return userRepo.save(user);
-//    }
-
 }

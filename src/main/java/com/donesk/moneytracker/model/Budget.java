@@ -44,7 +44,7 @@ public class Budget {
 
     @NonNull
     @Column(name = "status", nullable = false)
-    private boolean status = false;
+    private Boolean status = false;
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)

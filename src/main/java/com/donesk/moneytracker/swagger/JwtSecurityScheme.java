@@ -26,11 +26,11 @@ public class JwtSecurityScheme {
                         addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes
                         ("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("Money Tracker API")
+                .info(new Info().title("my pocket - API")
                         .description("Service to track and save your money.")
-                        .version("0.1").contact(new Contact().name("Chiril Dones")
+                        .version("1.0").contact(new Contact().name("Chiril Dones")
                                 .email( "doneskkk").url("chirildones@gmail.com"))
                         .license(new License().name("none")
-                                .url("none URL")));
+                                .url("https://github.com/doneskkk")));
     }
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface TransactionRepo extends JpaRepository<Transaction, Long> {
 
     List<Transaction> findByBudgetId(Long budgetId);
+    List<Transaction> findByCategoryId(Long categoryId);
 }

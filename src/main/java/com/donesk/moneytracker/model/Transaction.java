@@ -1,5 +1,6 @@
 package com.donesk.moneytracker.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -30,13 +31,13 @@ public class Transaction{
 
     @NonNull
     @Column(name = "date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @NonNull
     @ManyToOne
     @JoinColumn(name = "budget_id", referencedColumnName = "id")
     @JsonIgnore

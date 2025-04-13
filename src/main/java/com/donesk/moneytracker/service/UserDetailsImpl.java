@@ -33,6 +33,10 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
     }
+    public UserDetailsImpl(String username, String password,
+                           Collection<? extends GrantedAuthority> authorities) {
+        this(null, username, null, password, authorities);
+    }
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()

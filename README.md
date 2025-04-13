@@ -25,13 +25,6 @@ To use this API, follow these steps:
 
 ## API Endpoints
  - You can visit also SWAGGER - > http://localhost:3040/swagger-ui/index.html
-### Categories
-
-| Method  | Endpoint                  | Description                                |
-|---------|---------------------------|--------------------------------------------|
-| **POST**  | `/api/v1/categories`      | Create a new category                     |
-| **DELETE**| `/api/v1/categories`      | Delete an existing category by ID          |
-| **GET**   | `/api/v1/categories/{id}`  | Retrieve a category by ID                  |
 
 ### Budgets
 
